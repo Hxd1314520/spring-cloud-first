@@ -1,0 +1,318 @@
+spring:
+  profiles:
+    active: dev # 激活开发环境配置
+    
+    
+    
+---
+server:
+  port: 1666
+spring:
+  profiles: dev
+  application:
+    name: jms-gateway-zuul
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+eureka:
+  client:
+    service-url:
+      defaultZone: http://jms:88888888@localhost:1776/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+ribbon:
+  ReadTimeout: 100000
+  ConnectTimeout: 100000
+##设置hystrix超时时间(毫秒),设置调用者等待命令执行的超时限制，超过此时间，HystrixCommand被标记为TIMEOUT，并执行回退逻辑,默认1s
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 100000
+
+zuul:
+  host:
+    socket-timeout-millis: 150000
+    connect-timeout-millis: 600000
+  routes:
+    api-a:
+      path: /api/com/jms/user/**
+      serviceId: jms-user-consumer
+      stripPrefix: false
+    swagger-a:
+      path: /api/user/**
+      serviceId: jms-user-consumer
+      stripPrefix: true
+    api-b:
+      path: /api/com/jms/redpacket/**
+      serviceId: jms-redpacket-consumer
+      stripPrefix: false
+    swagger-b:
+      path: /api/redpacket/**
+      serviceId: jms-user-redpacket
+      stripPrefix: true
+    api-c:
+      path: /api/com/jms/chat/**
+      serviceId: jms-chat-consumer
+      stripPrefix: false
+    swagger-c:
+      path: /api/chat/**
+      serviceId: jms-chat-consumer
+      stripPrefix: true
+    api-d:
+      path: /api/com/jms/pay/**
+      serviceId: jms-pay-consumer
+      stripPrefix: false
+    swagger-d:
+      path: /api/pay/**
+      serviceId: jms-pay-consumer
+      stripPrefix: true
+    api-e:
+      path: /api/com/jms/live/**
+      serviceId: jms-live-consumer
+      stripPrefix: false
+    swagger-e:
+      path: /api/live/**
+      serviceId: jms-live-consumer
+      stripPrefix: true
+    api-f:
+      path: /api/com/jms/news/**
+      serviceId: jms-news-consumer
+      stripPrefix: false
+    swagger-f:
+      path: /api/news/**
+      serviceId: jms-news-consumer
+      stripPrefix: true
+    api-g:
+      path: /auth/**
+      serviceId: jms-auth-server
+      stripPrefix: false
+    api-h:
+      path: /api/com/jms/goods/**
+      serviceId: jms-goods-consumer
+      stripPrefix: false
+    swagger-h:
+      path: /api/goods/**
+      serviceId: jms-goods-consumer
+      stripPrefix: true
+    api-i:
+      path: /api/com/jms/order/**
+      serviceId: jms-order-consumer
+      stripPrefix: false
+    swagger-i:
+      path: /api/order/**
+      serviceId: jms-order-consumer
+      stripPrefix: true
+    api-j:
+      path: /api/com/jms/base/**
+      serviceId: jms-base-consumer
+      stripPrefix: false
+    swagger-j:
+      path: /api/base/**
+      serviceId: jms-base-consumer
+      stripPrefix: true
+  #      关闭zuul网关对cookie头的敏感
+  sensitive-headers: null
+  add-host-header: true
+
+
+
+---
+server:
+  port: 1666
+spring:
+  profiles: test
+  application:
+    name: jms-gateway-zuul
+eureka:
+  client:
+    service-url:
+      defaultZone: http://jms:88888888@47.105.212.126:1776/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+zuul:
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+  routes:
+    api-a:
+      path: /api/com/jms/user/**
+      serviceId: jms-user-consumer
+      stripPrefix: false
+    swagger-a:
+      path: /api/user/**
+      serviceId: jms-user-consumer
+      stripPrefix: true
+    api-b:
+      path: /api/com/jms/redpacket/**
+      serviceId: jms-redpacket-consumer
+      stripPrefix: false
+    swagger-b:
+      path: /api/redpacket/**
+      serviceId: jms-user-redpacket
+      stripPrefix: true
+    api-c:
+      path: /api/com/jms/chat/**
+      serviceId: jms-chat-consumer
+      stripPrefix: false
+    swagger-c:
+      path: /api/chat/**
+      serviceId: jms-chat-consumer
+      stripPrefix: true
+    api-d:
+      path: /api/com/jms/pay/**
+      serviceId: jms-pay-consumer
+      stripPrefix: false
+    swagger-d:
+      path: /api/pay/**
+      serviceId: jms-pay-consumer
+      stripPrefix: true
+    api-e:
+      path: /api/com/jms/live/**
+      serviceId: jms-live-consumer
+      stripPrefix: false
+    swagger-e:
+      path: /api/live/**
+      serviceId: jms-live-consumer
+      stripPrefix: true
+    api-f:
+      path: /api/com/jms/news/**
+      serviceId: jms-news-consumer
+      stripPrefix: false
+    swagger-f:
+      path: /api/news/**
+      serviceId: jms-news-consumer
+      stripPrefix: true
+    api-g:
+      path: /auth/**
+      serviceId: jms-auth-server
+      stripPrefix: false
+    api-h:
+      path: /api/com/jms/goods/**
+      serviceId: jms-goods-consumer
+      stripPrefix: false
+    swagger-h:
+      path: /api/goods/**
+      serviceId: jms-goods-consumer
+      stripPrefix: true
+    api-i:
+      path: /api/com/jms/order/**
+      serviceId: jms-order-consumer
+      stripPrefix: false
+    swagger-i:
+      path: /api/order/**
+      serviceId: jms-order-consumer
+      stripPrefix: true
+  #      关闭zuul网关对cookie头的敏感
+  sensitive-headers: null
+  add-host-header: true
+  
+  
+  
+---
+server:
+  port: 1666
+spring:
+  profiles: pro
+  application:
+    name: jms-gateway-zuul
+eureka:
+  client:
+    service-url:
+      defaultZone: http://jms:88888888@47.105.212.126:1776/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+zuul:
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+  routes:
+    api-a:
+      path: /api/com/jms/user/**
+      serviceId: jms-user-consumer
+      stripPrefix: false
+    swagger-a:
+      path: /api/user/**
+      serviceId: jms-user-consumer
+      stripPrefix: true
+    api-b:
+      path: /api/com/jms/redpacket/**
+      serviceId: jms-redpacket-consumer
+      stripPrefix: false
+    swagger-b:
+      path: /api/redpacket/**
+      serviceId: jms-user-redpacket
+      stripPrefix: true
+    api-c:
+      path: /api/com/jms/chat/**
+      serviceId: jms-chat-consumer
+      stripPrefix: false
+    swagger-c:
+      path: /api/chat/**
+      serviceId: jms-chat-consumer
+      stripPrefix: true
+    api-d:
+      path: /api/com/jms/pay/**
+      serviceId: jms-pay-consumer
+      stripPrefix: false
+    swagger-d:
+      path: /api/pay/**
+      serviceId: jms-pay-consumer
+      stripPrefix: true
+    api-e:
+      path: /api/com/jms/live/**
+      serviceId: jms-live-consumer
+      stripPrefix: false
+    swagger-e:
+      path: /api/live/**
+      serviceId: jms-live-consumer
+      stripPrefix: true
+    api-f:
+      path: /api/com/jms/news/**
+      serviceId: jms-news-consumer
+      stripPrefix: false
+    swagger-f:
+      path: /api/news/**
+      serviceId: jms-news-consumer
+      stripPrefix: true
+    api-g:
+      path: /auth/**
+      serviceId: jms-auth-server
+      stripPrefix: false
+    api-h:
+      path: /api/com/jms/goods/**
+      serviceId: jms-goods-consumer
+      stripPrefix: false
+    swagger-h:
+      path: /api/goods/**
+      serviceId: jms-goods-consumer
+      stripPrefix: true
+    api-i:
+      path: /api/com/jms/order/**
+      serviceId: jms-order-consumer
+      stripPrefix: false
+    swagger-i:
+      path: /api/order/**
+      serviceId: jms-order-consumer
+      stripPrefix: true
+  #      关闭zuul网关对cookie头的敏感
+  sensitive-headers: null
+  add-host-header: true
